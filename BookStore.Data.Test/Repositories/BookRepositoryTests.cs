@@ -9,6 +9,7 @@ using BookStore.Data.Repositories;
 using MockQueryable.Moq;
 
 using Moq;
+using FluentAssertions;
 
 namespace BookStore.Data.Test.Repositories;
 
@@ -28,12 +29,24 @@ public class BookRepositoryTests
 		new object[] { new Book("Test Book") { Id = 1  } },
 		};
 
+	private TestContext _testContext = null!;
+
+	public TestContext TestContext
+	{
+		get { return _testContext; }
+		set { _testContext = value; }
+	}
+
+	private ITestLogger _logger = null!;
+
 	private Mock<IAppDbContext> _mockDbContext = null!;
 	private BookRepository _bookRepository = null!;
+
 
 	[TestInitialize]
 	public void TestInitialize()
 	{
+		_logger = new TestContextLogger(TestContext);
 		_mockDbContext = new Mock<IAppDbContext>();
 		_bookRepository = new BookRepository(_mockDbContext.Object);
 	}
@@ -48,10 +61,11 @@ public class BookRepositoryTests
 		_mockDbContext.Setup(s => s.Set<Book, int>()).Returns(mockSet.Object);
 
 		// Act
-		Book? result = await _bookRepository.GetAsync(bookId);
+		Func<Task<Book?>> act = async () => await _bookRepository.GetAsync(bookId);
 
 		// Assert
-		Assert.AreEqual(PopulatedList[bookId - 1], result);
+		(await act.Should().NotThrowAsync())
+			 .Which.Should().BeEquivalentTo(PopulatedList[bookId - 1]);
 	}
 
 	[TestMethod]
@@ -109,7 +123,19 @@ public class BookRepositoryTests
 		_mockDbContext.Setup(s => s.Set<Book, int>()).Returns(mockSet.Object);
 
 		// Act
-		_bookRepository.Update(BookTestData.TestBook);
+		_logger.Log("Loading book data from file");
+		try
+		{
+			Book updatedBook = BookTestData.TestBook;
+			_bookRepository.Update(updatedBook);
+
+		}
+		catch (FormatException)
+		{
+			_logger.Log("Book data file format is invalid");
+			Assert.Fail();
+		}
+		_logger.Log("Book data loaded successfully");
 
 		// Assert
 		_mockDbContext.Verify(x => x.Set<Book, int>().Update(It.IsAny<Book>()), Times.Once);

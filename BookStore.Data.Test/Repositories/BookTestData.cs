@@ -7,6 +7,7 @@ namespace BookStore.Data.Test.Repositories;
 public static class BookTestData
 {
 	public static readonly string BookObjectJsonPath = "Repositories/Data/BookData.json";
+	/// <exception cref="FormatException">File containing book data is invalid</exception>
 	public static Book TestBook
 	{
 		get
