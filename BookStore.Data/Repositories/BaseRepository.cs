@@ -13,7 +13,7 @@ public abstract class BaseRepository<TEntity, TKey>(IAppDbContext appDbContext) 
 		return AppDbContext.Set<TEntity, TKey>().AsAsyncEnumerable();
 	}
 
-	public async Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken)
+	public async Task<TEntity> GetAsync(TKey id)
 	{
 		return await Task.Run(() => AppDbContext.Set<TEntity, TKey>().AsNoTracking().FirstOrDefault(d => d.Id!.Equals(id))!);
 	}

@@ -3,9 +3,6 @@ using BookStore.Data.Interfaces;
 
 namespace BookStore.Data.Repositories;
 
-public class OrderRepository : BaseRepository<Order, int>, IOrderRepository
+public class OrderRepository(IAppDbContext appDbContext) : BaseRepository<Order, int>(appDbContext), IOrderRepository
 {
-	public OrderRepository(IAppDbContext appDbContext) : base(appDbContext)
-	{
-	}
 }

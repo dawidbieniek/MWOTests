@@ -1,0 +1,9 @@
+{
+  "Id": 1,
+  "Title": "Test Book",
+  "Description": "This is a test book",
+  "AuthorId": 1,
+  "Price": 19.99,
+  "State": 0,
+  "Returned": false
+}
