@@ -4,13 +4,12 @@ using BookStore.Data.Interfaces;
 
 namespace BookStore.Data.Entities;
 
-public class Client(string username, string password) : IBaseEntity<int>
+public class Client : IBaseEntity<int>
 {
 	[Key]
 	public int Id { get; set; }
 	[Required]
-	public string Username { get; set; } = username;
+	public string? Username { get; set; }
 	[Required]
-	public string Password { get; set; } = password;
-
+	public string? Password { get; set; }
 }

@@ -4,15 +4,15 @@ using BookStore.Data.Interfaces;
 
 namespace BookStore.Data.Entities;
 
-public class Order(int clientId, IEnumerable<Book> books) : IBaseEntity<int>
+public class Order : IBaseEntity<int>
 {
 	[Key]
 	public int Id { get; set; }
 	[Required]
-	public int ClientId { get; set; } = clientId;
+	public int ClientId { get; set; }
 	[Required]
-	public IEnumerable<Book> Books { get; set; } = books;
-	public decimal TotalPrice { get; set;} = 0;
+	public IEnumerable<Book>? Books { get; set; }
+	public decimal TotalPrice { get; set; } = 0;
 	public OrderStatus Status { get; set; } = OrderStatus.Pending;
 }
 

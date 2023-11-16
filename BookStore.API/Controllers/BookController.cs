@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BookStore.Data.Entities;
 using BookStore.Data.Interfaces;
 
 namespace BookStore.API.Controllers;
@@ -11,11 +10,8 @@ public class BookController(IBookRepository bookRepository) : ControllerBase
 	private readonly IBookRepository _bookRepository = bookRepository;
 
 	[HttpGet("Get")]
-	public async IAsyncEnumerable<Book> Get()
+	public ActionResult Get()
 	{
-		await foreach (Book book in _bookRepository.GetAllAsync())
-		{
-			yield return book;
-		}
+		return new OkObjectResult(_bookRepository.GetAll());
 	}
 }

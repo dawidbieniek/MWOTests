@@ -1,6 +1,5 @@
-﻿using BookStore.Data.Interfaces;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using BookStore.Data.Interfaces;
 
 namespace BookStore.Data.Repositories;
 
@@ -8,14 +7,14 @@ public abstract class BaseRepository<TEntity, TKey>(IAppDbContext appDbContext) 
 {
 	protected readonly IAppDbContext AppDbContext = appDbContext;
 
-	public IAsyncEnumerable<TEntity> GetAllAsync()
+	public IEnumerable<TEntity> GetAll()
 	{
-		return AppDbContext.Set<TEntity, TKey>().AsAsyncEnumerable();
+		return AppDbContext.Set<TEntity, TKey>().AsEnumerable();
 	}
 
-	public async Task<TEntity> GetAsync(TKey id)
+	public TEntity Get(TKey id)
 	{
-		return await Task.Run(() => AppDbContext.Set<TEntity, TKey>().AsNoTracking().FirstOrDefault(d => d.Id!.Equals(id))!);
+		return AppDbContext.Set<TEntity, TKey>().AsNoTracking().FirstOrDefault(d => d.Id!.Equals(id))!;
 	}
 
 	public void Add(TEntity entity)

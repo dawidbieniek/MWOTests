@@ -18,14 +18,14 @@ public class BookRepositoryTests
 {
 	private static readonly List<Book> PopulatedList =
 	[
-		new Book("TestBook1") { Id = 1 },
-		new Book("TestBook2") { Id = 2 },
-		new Book("TestBook3") { Id = 3 },
+		new Book() { Title= "TestBook1", Id = 1 },
+		new Book() { Title= "TestBook2", Id = 2 },
+		new Book() { Title= "TestBook3", Id = 3 },
 	];
 	private static readonly List<Book> EmptyList = [];
 	public static IEnumerable<object[]> AddBookData => new List<object[]>
 	{
-		new object[] { new Book("Test Book") { Id = 1  } },
+		new object[] { new Book() {Title= "Test Book", Id = 1  } },
 	};
 
 	private TestContext _testContext = null!;
@@ -53,31 +53,30 @@ public class BookRepositoryTests
 	[TestMethod]
 	[DataRow(1)]
 	[DataRow(3)]
-	public async Task GetAsync_ShouldReturnBook_IdIsInTable(int bookId)
+	public void Get_ShouldReturnBook_IdIsInTable(int bookId)
 	{
 		// Arrange
 		Mock<DbSet<Book>> mockSet = PopulatedList.AsQueryable().BuildMockDbSet();
 		_mockDbContext.Setup(s => s.Set<Book, int>()).Returns(mockSet.Object);
 
 		// Act
-		Func<Task<Book?>> act = async () => await _bookRepository.GetAsync(bookId);
+		Book? result = _bookRepository.Get(bookId);
 
 		// Assert
-		(await act.Should().NotThrowAsync())
-			 .Which.Should().BeEquivalentTo(PopulatedList[bookId - 1]);
+		result.Should().BeEquivalentTo(PopulatedList[bookId - 1]);
 	}
 
 	[TestMethod]
 	[DataRow(1)]
 	[DataRow(3)]
-	public async Task GetAsync_ShouldReturnNull_TableIsEmpty(int bookId)
+	public void Get_ShouldReturnNull_TableIsEmpty(int bookId)
 	{
 		// Arrange
 		Mock<DbSet<Book>> mockSet = EmptyList.AsQueryable().BuildMockDbSet();
 		_mockDbContext.Setup(s => s.Set<Book, int>()).Returns(mockSet.Object);
 
 		// Act
-		Book? result = await _bookRepository.GetAsync(bookId);
+		Book? result = _bookRepository.Get(bookId);
 
 		// Assert
 		Assert.IsNull(result);
@@ -86,14 +85,14 @@ public class BookRepositoryTests
 	[TestMethod]
 	[DataRow(10)]
 	[DataRow(-1)]
-	public async Task GetAsync_ShouldReturnNull_IdIsNotInTable(int bookId)
+	public void Get_ShouldReturnNull_IdIsNotInTable(int bookId)
 	{
 		// Arrange
 		Mock<DbSet<Book>> mockSet = PopulatedList.AsQueryable().BuildMockDbSet();
 		_mockDbContext.Setup(s => s.Set<Book, int>()).Returns(mockSet.Object);
 
 		// Act
-		Book? result = await _bookRepository.GetAsync(bookId);
+		Book? result =  _bookRepository.Get(bookId);
 
 		// Assert
 		Assert.IsNull(result);
