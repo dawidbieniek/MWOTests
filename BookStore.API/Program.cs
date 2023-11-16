@@ -1,3 +1,9 @@
+using BookStore.Data;
+using BookStore.Data.Interfaces;
+using BookStore.Data.Repositories;
+
+using Microsoft.EntityFrameworkCore;
+
 namespace BookStore.API
 {
 	public class Program
@@ -9,6 +15,9 @@ namespace BookStore.API
 			// Add services to the container.
 
 			builder.Services.AddControllers();
+			builder.Services.AddScoped<IBookRepository, BookRepository>()
+				.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration["Data:AppConnection:ConnectionString"]))
+				.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>()!);
 
 			var app = builder.Build();
 
@@ -17,7 +26,6 @@ namespace BookStore.API
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
-
 
 			app.MapControllers();
 

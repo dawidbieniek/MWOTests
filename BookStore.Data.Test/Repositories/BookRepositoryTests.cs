@@ -23,11 +23,10 @@ public class BookRepositoryTests
 		new Book("TestBook3") { Id = 3 },
 	];
 	private static readonly List<Book> EmptyList = [];
-	public static IEnumerable<object[]> AddBookData =>
-		new List<object[]>
-		{
+	public static IEnumerable<object[]> AddBookData => new List<object[]>
+	{
 		new object[] { new Book("Test Book") { Id = 1  } },
-		};
+	};
 
 	private TestContext _testContext = null!;
 

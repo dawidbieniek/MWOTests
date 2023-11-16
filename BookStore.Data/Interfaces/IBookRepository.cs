@@ -2,6 +2,6 @@
 
 namespace BookStore.Data.Interfaces;
 
-internal interface IBookRepository : IBaseRepository<Book, int>
+public interface IBookRepository : IBaseRepository<Book, int>
 {
 }
