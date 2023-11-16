@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using BookStore.Data.Entities;
+﻿using BookStore.Data.Entities;
 using BookStore.Data.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BookStore.Data;
 
@@ -9,9 +10,9 @@ public class AppDbContext(IConfiguration config, DbContextOptions<AppDbContext> 
 {
 	public IConfiguration Config { get; init; } = config;
 	public DbSet<Book> Book { get; set; }
-	public DbSet<Author> Author { get; set; }
-	public DbSet<Client> Client { get; set; }
-	public DbSet<Order> Order { get; set; }
+	//public DbSet<Author> Author { get; set; }
+	//public DbSet<Client> Client { get; set; }
+	//public DbSet<Order> Order { get; set; }
 
 	public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
 	{

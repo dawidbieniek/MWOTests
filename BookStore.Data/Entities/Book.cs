@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 using BookStore.Data.Interfaces;
 
 namespace BookStore.Data.Entities;
 
+[Table("Books")]
 public class Book : IBaseEntity<int>
 {
 	[Key]

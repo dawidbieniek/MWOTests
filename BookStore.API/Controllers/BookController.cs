@@ -9,7 +9,7 @@ public class BookController(IBookRepository bookRepository) : ControllerBase
 {
 	private readonly IBookRepository _bookRepository = bookRepository;
 
-	[HttpGet("Get")]
+	[HttpGet]
 	public ActionResult Get()
 	{
 		return new OkObjectResult(_bookRepository.GetAll());
